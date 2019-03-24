@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Root" >
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="TaharezLook/FrameWindow" Name="Root/MainMenu" >
+            <Property Name="Text" Value="Main Menu" />
+            <Property Name="TitlebarFont" Value="Commonwealth-10" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.383008,0},{0.3,0},{0.633008,0},{0.706553,0}}" />
+            <Window Type="TaharezLook/Button" Name="Root/MainMenu/Start Game" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Start Game" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.2,0},{0.2,0},{0.8,0},{0.3,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Button" Name="Root/MainMenu/ExitGame" >
+                <Property Name="Text" Value="Exit Game" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.20315,0},{0.482098,0},{0.80315,0},{0.582097,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Button" Name="Root/MainMenu/ResumeGame" >
+                <Property Name="Text" Value="Resume Game" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.202756,0},{0.622076,0},{0.802756,0},{0.722076,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Button" Name="Root/MainMenu/Settings" >
+                <Property Name="Text" Value="Settings" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.202756,0},{0.345274,0},{0.802756,0},{0.445274,0}}" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

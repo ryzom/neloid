@@ -1,0 +1,48 @@
+<Levels Category="Beginner">
+  <Level  Name="First Beginner Level"
+          Number="1" 
+          Background="SomeBackgroundFile" 
+          BackgroundMusic="SomeMusicSample"
+          AmbientLightColor="82,100,133" 
+          DirectionalLightPos="0,0,0" 
+          DirectionalLightColor="255,255,255">
+	  <Tile ID="1" Type="normal" PosX="0" PosY="0"/>
+    <Tile ID="2" Type="start" PosX="0" PosY="1"/>
+    <Tile ID="3" Type="normal" PosX="0" PosY="-1"/>
+    <Tile ID="4" Type="normal" PosX="1" PosY="0"/>
+    <Tile ID="5" Type="normal" PosX="1" PosY="1"/>
+    <Tile ID="6" Type="normal" PosX="1" PosY="-1"/>
+    <Tile ID="7" Type="normal" PosX="2" PosY="0"/>
+    <Tile ID="8" Type="normal" PosX="2" PosY="1"/>
+    <Tile ID="9" Type="normal" PosX="2" PosY="-1"/>
+    <Tile ID="10" Type="portal" PortalID="3" PosX="3" PosY="1"/>
+    <Tile ID="11" Type="weak" PosX="3" PosY="-1"/>
+    <Tile ID="12" Type="normal" PosX="3" PosY="0"/>
+    <Tile ID="13" Type="normal" PosX="4" PosY="0"/>
+    <Tile ID="14" Type="normal" PosX="5" PosY="0"/>
+    <Tile ID="15" Type="goal" PosX="6" PosY="0"/>
+  </Level>
+
+  <Level  Name="Second Beginner Level"
+          Number="2"
+          Background="SomeBackgroundFile"
+          BackgroundMusic="SomeMusicSample"
+          AmbientLightColor="82,100,133"
+          DirectionalLightPos="0,0,0"
+          DirectionalLightColor="255,255,255">
+    <Tile ID="1" Type="normal" PosX="0" PosY="0"/>
+    <Tile ID="2" Type="start" PosX="0" PosY="1"/>
+    <Tile ID="3" Type="normal" PosX="0" PosY="-1"/>
+    <Tile ID="4" Type="normal" PosX="1" PosY="0"/>
+    <Tile ID="5" Type="normal" PosX="1" PosY="1"/>
+    <Tile ID="6" Type="normal" PosX="1" PosY="-1"/>
+    <Tile ID="7" Type="normal" PosX="2" PosY="0"/>
+    <Tile ID="8" Type="normal" PosX="2" PosY="1"/>
+    <Tile ID="9" Type="normal" PosX="2" PosY="-1"/>
+    <Tile ID="10" Type="normal" PosX="1" PosY="1"/>
+    <Tile ID="11" Type="normal" PosX="1" PosY="-2"/>
+    <Tile ID="12" Type="normal" PosX="1" PosY="-3"/>
+    <Tile ID="13" Type="goal" PosX="1" PosY="-4"/>
+    <Tile ID="14" Type="normal" PosX="3" PosY="0"/>
+  </Level>
+</Levels>
