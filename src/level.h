@@ -27,18 +27,37 @@
 class Level;
 class Tile;
 
-class LevelCategory {
+class LevelCategory : public NLMISC::IStreamable {
 public:
+	LevelCategory() { };
+
 	std::string Name;
 
 	typedef std::vector<Level *> TLevelsList;
 	TLevelsList Levels;
 
 	void processXml(xmlNodePtr node);
+
+	virtual Level *getLevelByID(uint32 levelId);
+	void serial(NLMISC::IStream &stream);
+
+	NLMISC_DECLARE_CLASS(LevelCategory);
 };
 
-class Level {
+class LevelCategoryProgressive : public LevelCategory {
 public:
+
+	LevelCategoryProgressive() { Name = "Progressive"; };
+	void processXml(xmlNodePtr node) { };
+
+	Level *getLevelByID(uint32 levelId);
+
+	NLMISC_DECLARE_CLASS(LevelCategoryProgressive);
+};
+
+class Level : public NLMISC::IStreamable {
+public:
+	Level() : ParentCategory(NULL) { };
 	Level(LevelCategory *parentCategory) : ParentCategory(parentCategory) { };
 	LevelCategory *ParentCategory;
 
@@ -58,6 +77,8 @@ public:
 	void load();
 	void unload();
 	void update(double deltaTime);
+	void serial(NLMISC::IStream &stream);
+
 
 	Tile &getStartTile();
 	Tile &getTileByCoords(sint32 x, sint32 y);
@@ -66,6 +87,8 @@ public:
 	bool isTileById(uint32 id);
 
 	bool addTile(Tile *tile);
+
+	NLMISC_DECLARE_CLASS(Level);
 };
 
 #endif // NL_LEVEL_H

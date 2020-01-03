@@ -64,6 +64,9 @@ public:
 	/// Called to restart a level (restore broken tiles, move the cuboid back.
 	void requestLevelRestart();
 
+	/// Called when the Level Editor is requested at the main menu.
+	void requestLevelEditor();
+
 	void requestRotateRight();
 	void requestRotateLeft();
 	void requestRotateUp();

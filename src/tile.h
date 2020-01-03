@@ -16,8 +16,9 @@
 
 class Level;
 
-class Tile {
+class Tile : public NLMISC::IStreamable {
 public:
+	Tile() : ParentLevel(NULL) { }
 	Tile(Level *parentLevel) : ParentLevel(parentLevel), TileActive(true) { };
 	Tile(uint32 ID, std::string TileType, sint32 PosX, sint32 PosY, bool TileActive) : TileActive(TileActive), ID(ID), TileType(TileType), PosX(PosX), PosY(PosY) {};
 	Level *ParentLevel;
@@ -41,75 +42,14 @@ public:
 	NL3D::UInstance TileInstance;
 
 	void processXml(xmlNodePtr node);
+	void serial(NLMISC::IStream &stream);
 
 	virtual void contact(bool upright) = 0;
 	virtual void contactLeft() = 0;
 	virtual void load() = 0;
 	virtual void unload() = 0;
 	virtual void update(double deltaTime) = 0;
-	
-};
 
-class TileStart : public Tile {
-public:
-	TileStart(Level *parentLevel) : Tile(parentLevel) { };
-	TileStart(uint32 ID, sint32 PosX, sint32 PosY, bool TileActive) : Tile(ID, "start", PosX, PosY, TileActive) {};
-	void processXml(xmlNodePtr node);
-	void contact(bool upright) { };
-	void contactLeft() { };
-	void load();
-	void unload();
-	void update(double deltaTime) { };
-};
-
-class TileGoal : public Tile {
-public:
-	TileGoal(Level *parentLevel) : Tile(parentLevel) { };
-	TileGoal(uint32 ID, sint32 PosX, sint32 PosY, bool TileActive) : Tile(ID, "goal", PosX, PosY, TileActive) {};
-	void processXml(xmlNodePtr node);
-	void contact(bool upright);
-	void contactLeft() { };
-	void load();
-	void unload();
-	void update(double deltaTime) { };
-};
-
-class TileNormal : public Tile {
-public:
-	TileNormal(Level *parentLevel) : Tile(parentLevel) { };
-	TileNormal(uint32 ID, sint32 PosX, sint32 PosY, bool TileActive) : Tile(ID, "normal", PosX, PosY, TileActive) {};
-	void processXml(xmlNodePtr node);
-	void contact(bool upright) { };
-	void contactLeft() { };
-	void load();
-	void unload();
-	void update(double deltaTime) { };
-};
-
-class TilePortal : public Tile {
-public:
-	TilePortal(Level *parentLevel) : Tile(parentLevel) { };
-	void processXml(xmlNodePtr node);
-	void contact(bool upright);
-	void contactLeft() { };
-	void load();
-	void unload();
-	void update(double deltaTime) { };
-	/// If the type is a portal we need the destination ID.
-	uint32 PortalID;
-};
-
-class TileWeak : public Tile {
-public:
-	TileWeak(Level *parentLevel) : Tile(parentLevel), Touched(false) { };
-	void processXml(xmlNodePtr node);
-	void contact(bool upright);
-	void contactLeft();
-	void load();
-	void unload();
-	void update(double deltaTime) { };
-
-	bool Touched;
 };
 
 #endif // NL_TILE_H

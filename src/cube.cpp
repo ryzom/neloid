@@ -196,6 +196,8 @@ void Cube::setToState(const CState& state) {
 	}
 
 	m_cubeInstance.setMatrix(mat);
+	m_dummyCube.setPos(mat.getPos());
+	m_dummyCube.setRotQuat(NLMISC::CQuat::Identity);
 	m_mat->setOpacity(0);
 	startAnimation(Spawn);
 }
@@ -224,4 +226,8 @@ void Cube::toggleDebugVisibility() {
 	} else {
 		m_dummyCube.show();
 	}
+}
+
+NLMISC::CVector Cube::getDummyPos() {
+	return m_dummyCube.getMatrix().getPos();
 }

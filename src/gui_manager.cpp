@@ -22,6 +22,11 @@ bool handleResumeGameBtn(const CEGUI::EventArgs& e) {
 	return true;
 }
 
+bool handleLevelEditorBtn(const CEGUI::EventArgs& e) {
+	NeloidGame::getInstance().requestLevelEditor();
+	return true;
+}
+
 void GuiManager::init() {
 	nlinfo("Loading NeL CEGUI Renderer.");
 
@@ -65,6 +70,7 @@ void GuiManager::init() {
 		Window* sheet = WindowManager::getSingleton().loadWindowLayout("neloid.layout");
 		System::getSingleton().setGUISheet(sheet);
 		WindowManager::getSingleton().getWindow("Root/MainMenu/ResumeGame")->hide();
+		WindowManager::getSingleton().getWindow("Root/LevelEditor")->hide();
 	} catch(CEGUI::GenericException &e) {
 		nlinfo("Caught CEGUI Exception during System creation: %s", e.getMessage().c_str());
 	} catch(CEGUI::Exception &e) {	// catch to prevent exit (errors will be logged).
@@ -80,6 +86,8 @@ void GuiManager::init() {
 		subscribeEvent(CEGUI::PushButton::EventClicked, handleStartGameBtn);
 	CEGUI::WindowManager::getSingleton().getWindow("Root/MainMenu/ResumeGame")->
 		subscribeEvent(CEGUI::PushButton::EventClicked, handleResumeGameBtn);
+	CEGUI::WindowManager::getSingleton().getWindow("Root/MainMenu/Level Editor")->
+		subscribeEvent(CEGUI::PushButton::EventClicked, handleLevelEditorBtn);
 }
 
 void GuiManager::update() {

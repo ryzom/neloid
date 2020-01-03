@@ -52,7 +52,7 @@ void NeloidGame::init() {
     m_textContext = m_driver->createTextContext(NLMISC::CPath::lookup("VeraMono.ttf"));
     nlassert(m_textContext);
 
-	m_scene = m_driver->createScene(true);
+	m_scene = m_driver->createScene(false);
 
 	// Key light
 	m_light = NL3D::ULight::createLight();
@@ -121,9 +121,13 @@ void NeloidGame::run() {
 		// Call the render method so that the level can update and render.
 		if(m_gameState == Playing) {
 			// Update the cube.
-			if(m_cube != NULL)
+			if(m_cube != NULL) {
 				m_cube->update(m_dt);
-
+				NLMISC::CVector lookFrom(5.f, -8.f, 6.f);
+				lookFrom.x+=m_cube->getDummyPos().x;
+				lookFrom.y+=m_cube->getDummyPos().y;
+				m_camera.lookAt(lookFrom, m_cube->getDummyPos());
+			}
 			// Update the logic testing debug objects.
 			if(!m_logicTester1.empty()) {
 				m_logicTester1.setPos(NLMISC::CVector((float)m_cuboidState.x1, (float)m_cuboidState.y1, 0.0f));
@@ -132,11 +136,15 @@ void NeloidGame::run() {
 
 			// Upload the current level.
 			LevelManager::getInstance().getCurrentLevel().update(m_dt);
-			LevelEditor::getInstance().update();
 
 			// Check to see the result of our move.
 			if(m_cuboidState.NeedMoveCheck && !m_cube->isAnimating())
 				checkMoveResult();
+		}
+
+		// Handle the level editor.
+		if(m_gameState == Editor) {
+			LevelEditor::getInstance().update();
 		}
 
 		// Request scene animation.
@@ -327,8 +335,8 @@ void NeloidGame::requestStartGame() {
 	GuiManager::getInstance().toggleCursor(false);
 
 	// Load the level. For now we'll just load the fisrt beginner level.
-	//LevelManager::getInstance().loadLevel("Beginner", 1);
-	LevelManager::getInstance().generateLevel();
+	LevelManager::getInstance().loadLevel("Beginner", 1);
+	//LevelManager::getInstance().generateLevel();
 
 	// Reset cube (+ stats)
 	if(m_cube==NULL)
@@ -385,6 +393,7 @@ void NeloidGame::requestPauseGame() {
 	// Show the menu (hide start,show resume.)
 	GuiManager::getInstance().toggleWindow("Root/MainMenu/Start Game", false);
 	GuiManager::getInstance().toggleWindow("Root/MainMenu/ResumeGame", true);
+	GuiManager::getInstance().toggleWindow("Root/MainMenu/Level Editor", false);
 	GuiManager::getInstance().toggleWindow("Root/MainMenu", true);
 	GuiManager::getInstance().toggleCursor(true);
 
@@ -396,6 +405,8 @@ void NeloidGame::requestLevelEnd() {
 	try {
 		// Get the next category/level number to load.
 		std::string levelCat = LevelManager::getInstance().getCurrentLevel().ParentCategory->Name;
+
+		// TODO: Add a method like 'getNextLevelId() instead of assuming the next level ID is simply incremented.
 		uint32 levelNum = LevelManager::getInstance().getCurrentLevel().ID+1;
 
 		// Unload the previous level's 3D data.
@@ -418,7 +429,7 @@ void NeloidGame::requestLevelEnd() {
 }
 
 void NeloidGame::requestLevelRestart() {
-	Level currentLevel = LevelManager::getInstance().getCurrentLevel();
+	Level &currentLevel = LevelManager::getInstance().getCurrentLevel();
 	Tile &startTile = currentLevel.getStartTile();
 	m_cuboidState = CState(startTile);
 	m_cube->setToState(m_cuboidState);
@@ -435,6 +446,19 @@ void NeloidGame::requestLevelPortal(uint32 portalId) {
 		requestLevelRestart();
 		SessionManager::getInstance().getCurrentSession().incrementFalls();
 	}
+}
+
+void NeloidGame::requestLevelEditor() {
+	// Hide the menu.
+	GuiManager::getInstance().toggleWindow("Root/MainMenu", false);
+	GuiManager::getInstance().toggleCursor(false);
+
+	// Show the editor menu.
+	GuiManager::getInstance().toggleWindow("Root/LevelEditor", true);
+
+	m_gameState = Editor;
+
+	LevelEditor::getInstance().setActive(true);
 }
 
 double NeloidGame::getTime() {

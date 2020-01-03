@@ -10,6 +10,9 @@
 #include "neloidgame.h"
 #include "tile.h"
 #include "xml_helpers.h"
+#include "level_editor.h"
+
+#include "tiles.h"
 
 void LevelCategory::processXml(xmlNodePtr node) {
 	Name = GetXmlPropertyString(node, "Category");
@@ -27,6 +30,42 @@ void LevelCategory::processXml(xmlNodePtr node) {
 		// Advance to the next one.
 		levelPtr = NLMISC::CIXml::getNextChildNode(levelPtr, "Level");
 	}
+}
+
+void LevelCategory::serial(NLMISC::IStream &stream) {
+	
+	stream.serial(Name);	
+	stream.serialContPolyPtr(Levels);
+
+	if(stream.isReading()) {
+		TLevelsList::iterator iter = Levels.begin();
+		while(iter != Levels.end()) {
+			(*iter)->ParentCategory = this;
+			iter++;
+		}
+	}
+}
+
+Level *LevelCategory::getLevelByID(uint32 levelId) {
+	Level *foundLevel=NULL;
+
+	TLevelsList::iterator levelsItr = Levels.begin();
+	while(levelsItr != Levels.end()) {
+		if((*levelsItr)->ID == levelId) {
+			foundLevel=(*levelsItr);
+			break;
+		}	
+		levelsItr++;
+	}
+	return foundLevel;
+}
+
+Level *LevelCategoryProgressive::getLevelByID(uint32 levelId) {
+	uint32 levelSize = 7 + 3*levelId;
+	Level *level = LevelEditor::getInstance().generateLevel(levelSize);
+	level->ID = levelId;
+	level->ParentCategory = dynamic_cast<LevelCategory*>(this);
+	return level;
 }
 
 void Level::processXml(xmlNodePtr node) {
@@ -68,6 +107,17 @@ void Level::processXml(xmlNodePtr node) {
 		// Advance to the next one.
 		tilePtr = NLMISC::CIXml::getNextChildNode(tilePtr, "Tile");
 	}
+}
+
+void Level::serial(NLMISC::IStream &stream) {
+	stream.serial(ID);
+	stream.serial(Name);
+	stream.serial(Background);
+	stream.serial(BackgroundMusic);
+	stream.serial(AmbientLightColor);
+	stream.serial(DirectionalLightColor);
+	stream.serial(DirectionalLightPos);
+	stream.serialContPolyPtr(Tiles);
 }
 
 void Level::load() {

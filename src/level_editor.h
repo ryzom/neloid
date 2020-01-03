@@ -57,6 +57,10 @@ public:
 	void selectPrev();
 
 	Level *generateLevel(uint16 steps);
+
+	void setActive(bool active) { m_editorActive = active; }
+	bool getActive() { return m_editorActive; }
+
 private:
 	typedef std::vector<Tile *> TSelectionList;
 	/// Contains selectable tiles.
@@ -64,6 +68,12 @@ private:
 
 	/// Holds the index to the currently selected tile.
 	uint32 m_selectedTile;
+
+	/// Determines if we're in editor mode thus whether to show the editor tile.
+	bool m_editorActive;
+
+	/// Determines whether to run the tile updates.
+	bool m_levelLoaded;
 
 	void setupTile(Tile *tile);
 	sint32 m_tileX, m_tileY;

@@ -77,6 +77,7 @@ public:
 
 	void clearParticles();
 	void toggleDebugVisibility();
+	NLMISC::CVector getDummyPos();
 };
 
 #endif // NL_CUBE_H

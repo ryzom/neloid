@@ -9,7 +9,7 @@
 
 #include "neloidgame.h"
 #include "level_manager.h"
-#include "tile.h"
+#include "tiles.h"
 #include "level.h"
 #include "CMove.h"
 
@@ -23,8 +23,8 @@ LevelEditor::~LevelEditor() {
 void LevelEditor::init() {
 	nlinfo("Loading Level Editor");
 	// Retrieve the width and height of the window in order to initialize the mouse listener.
-	float width = NeloidGame::getInstance().driver().getWindowWidth();
-	float height = NeloidGame::getInstance().driver().getWindowHeight();
+	//float width = NeloidGame::getInstance().driver().getWindowWidth();
+	//float height = NeloidGame::getInstance().driver().getWindowHeight();
 
 	// Reset the tile location to 0,0
 	m_tileX=0;
@@ -42,6 +42,9 @@ void LevelEditor::init() {
 	setupTile(new TilePortal(NULL));
 	setupTile(new TileWeak(NULL));
 	setupTile(new TileGoal(NULL));
+
+	m_editorActive = false;
+	m_levelLoaded = false;
 }
 
 void LevelEditor::setupTile(Tile *tile) {
@@ -64,7 +67,11 @@ void LevelEditor::setupTile(Tile *tile) {
 }
 
 void LevelEditor::update() {
-	
+
+	// Anything beyond here requires that we load a level to edit.
+	if(!m_levelLoaded)
+		return;
+
 	if(LevelManager::getInstance().getCurrentLevel().isTileByCoords(m_levelEdMouseListener->getTilePosition().x, m_levelEdMouseListener->getTilePosition().y)) {
 		// Overlay the existing tile by only dropping -1 (1/2 the upright cube.)
 		m_currentTile->TileInstance.setPos(NLMISC::CVector(m_levelEdMouseListener->getTilePosition().x, m_levelEdMouseListener->getTilePosition().y, -1.0f));

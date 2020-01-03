@@ -18,17 +18,18 @@
 #include <nel/3d/u_instance.h>
 
 #include "neloid_exceptions.h"
+#include "level.h"
 
 class Level;
 class Tile;
 class LevelCategory;
 
 class LevelManager {
-	LevelManager() { m_currentLevel = NULL; };
+	LevelManager() : m_currentLevel(NULL) {	};
+
 	~LevelManager() { };
 
 	NLMISC_SAFE_SINGLETON_DECL(LevelManager);
-
 public:
 	void init();
 	void update();
@@ -40,7 +41,6 @@ public:
 
 	Level &getCurrentLevel() { if(m_currentLevel == NULL) throw ENoLevelLoaded(); return *m_currentLevel; }
 
-	void generateLevel();
 private:
 	typedef std::vector<LevelCategory *> TLevelCategories;
 	TLevelCategories m_levelCategories;

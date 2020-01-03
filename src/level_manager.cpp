@@ -53,6 +53,8 @@ void LevelManager::init() {
 			file.close();
 		} else
 			nlwarning("Unable to load file: exampleLevel.xml");
+		// Next add the static "Progressive" level category.
+		m_levelCategories.push_back(dynamic_cast<LevelCategory*>(new LevelCategoryProgressive()));
 	} catch(NLMISC::Exception &e) {
 		// Handle the exception here...
 		nlinfo("Caugh exception: %s", e.what());
@@ -79,19 +81,10 @@ Level *LevelManager::findLevel(std::string catName, uint32 levelNbr) {
 	TLevelCategories::iterator itr = m_levelCategories.begin();
 	while(itr != m_levelCategories.end()) {
 		if( (*itr)->Name == catName ) {
-			LevelCategory::TLevelsList::iterator levelsItr = (*itr)->Levels.begin();
-			while(levelsItr != (*itr)->Levels.end()) {
-				if((*levelsItr)->ID == levelNbr) {
-					foundLevel=(*levelsItr);
-					break;
-				}	
-				levelsItr++;
-			}
+			foundLevel = (*itr)->getLevelByID(levelNbr);
+			if(foundLevel != NULL)
+				break;
 		}
-
-		if(foundLevel != NULL)
-			break;
-
 		itr++;
 	}
 
@@ -103,9 +96,6 @@ Level *LevelManager::findLevel(std::string catName, uint32 levelNbr) {
 
 void LevelManager::unloadLevel() {
 	m_currentLevel->unload();
+	delete m_currentLevel;
 	m_currentLevel = NULL;
-}
-
-void LevelManager::generateLevel() {
-	m_currentLevel = LevelEditor::getInstance().generateLevel(10);
 }
